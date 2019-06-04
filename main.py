@@ -57,7 +57,8 @@ class DealerTrackScraper:
         makeOptions = self.browser.find_elements_by_xpath(oOptMake)
         make_index = 0
         make_size = len(makeOptions)
-        for make_index in range(0, make_size-1):
+        # for make_index in range(0, make_size-1):
+        for make_index in [3, 4]:
             make_select = Select(self.browser.find_element_by_xpath(oSelMake))
             make_select.select_by_index(make_index)
             
@@ -74,10 +75,12 @@ class DealerTrackScraper:
                 for trim_index in range(0, trim_size-1):
                     trim_select = Select(self.browser.find_element_by_xpath(oSelTrim))
                     trim_select.select_by_index(trim_index)
-
-                    self.selectNewDealOption(year, make_index, model_index, trim_index)
-                    self.selectCompareQuotes()
-                    self.extractInformation()
+                    try:
+                        self.selectNewDealOption(year, make_index, model_index, trim_index)
+                        self.selectCompareQuotes()
+                        self.extractInformation()
+                    except:
+                        pass
                     self.selectMenu("Salesmaker", "New Deal")
                     self.switchMainBody()
 
@@ -231,18 +234,19 @@ class DealerTrackScraper:
             self.switchMainBody()
             
             #set Incentives
-            # self.clickElement(oBtnGetIncentives, "GetIncentives Button")
-            # time.sleep(5)
-            # self.browser.find_element_by_xpath(oTxtZipCode).send_keys("92630")
-            # self.clickElement(oBtnRefreshIncentives, "RefreshIncentives Button")
-            # time.sleep(5)
+            self.clickElement(oBtnGetIncentives, "GetIncentives Button")
+            time.sleep(5)
+            self.browser.find_element_by_xpath(oTxtZipCode).send_keys("92630")
+            self.clickElement(oBtnRefreshIncentives, "RefreshIncentives Button")
+            time.sleep(5)
             # self.clickElement(oChk4, "Check4")
-            # self.clickElement(oChk5, "Check5")   
-            # self.clickElement(oBtnOk, "OK Button")
+            # self.clickElement(oChk5, "Check5")  
+            self.clickElement(oBtnOk, "OK Button")
             # time.sleep(5)
 
             #Click Calculate Button
-            self.browser.find_element_by_xpath(oBtnCalculate).click()
+            # self.browser.find_element_by_xpath(oBtnCalculate).click()
+            self.clickElement(oBtnCalculate, "Calculate Button")
             time.sleep(10)
         except:
             raise Exception("selectCompareQuotes Failure")
